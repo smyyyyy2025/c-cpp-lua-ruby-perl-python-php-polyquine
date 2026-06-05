@@ -26,8 +26,8 @@ A polyglot quine that prints its own source code, valid in:
 # C
 gcc -std=c99 polyquine.c -o polyquine && ./polyquine
 
-# C++ (suppress -Wwrite-strings warning)
-g++ -std=c++11 -Wno-write-strings polyquine.c -o polyquine && ./polyquine
+# C++ (all warnings disabled)
+g++ -std=c++11 -w polyquine.c -o polyquine && ./polyquine
 
 # Python
 python3 polyquine.c
@@ -41,14 +41,15 @@ ruby polyquine.c
 # Perl
 perl polyquine.c
 ```
-# Verify it
+
+## Verify it
 
 ```bash
 # C
 gcc -std=c99 polyquine.c -o polyquine && ./polyquine | diff - polyquine.c
 
-# C++ (no warnings)
-g++ -std=c++11 -Wno-write-strings polyquine.c -o polyquine && ./polyquine | diff - polyquine.c
+# C++ (all warnings disabled)
+g++ -std=c++11 -w polyquine.c -o polyquine && ./polyquine | diff - polyquine.c
 
 # Python
 python3 polyquine.c | diff - polyquine.c
@@ -62,4 +63,6 @@ ruby polyquine.c | diff - polyquine.c
 # Perl
 perl polyquine.c | diff - polyquine.c
 ```
-> Note: No output means the quine is correct. The -Wno-write-strings flag suppresses the C++ warning about assigning a string constant to char*.
+
+> **Note**: No output means the quine is correct. The `-w` flag disables all C++ compilation warnings.
+
