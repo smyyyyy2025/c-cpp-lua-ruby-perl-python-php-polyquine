@@ -37,7 +37,7 @@ perl polyquine.c
 gcc polyquine.c -o polyquine && ./polyquine | diff - polyquine.c
 
 # C++
-g++ polyquine.c -o polyquine && ./polyquine | diff - polyquine.c
+g++ -Wno-write-strings polyquine.c -o polyquine && ./polyquine | diff - polyquine.c
 
 # Python
 python polyquine.c | diff - polyquine.c
@@ -51,3 +51,4 @@ ruby polyquine.c | diff - polyquine.c
 # Perl
 perl polyquine.c | diff - polyquine.c
 ```
+> Note: No output means the quine is correct.
