@@ -44,25 +44,28 @@ perl polyquine.c
 
 ## Verify it
 
+No output means the quine is correct.
+
 ```bash
-# C
-gcc -std=c99 polyquine.c -o polyquine && ./polyquine | diff - polyquine.c
-
-# C++ (all warnings disabled)
-g++ -std=c++11 -w polyquine.c -o polyquine && ./polyquine | diff - polyquine.c
-
-# Python
-python3 polyquine.c | diff - polyquine.c
-
-# Lua
-lua polyquine.c | diff - polyquine.c
-
-# Ruby
-ruby polyquine.c | diff - polyquine.c
-
-# Perl
-perl polyquine.c | diff - polyquine.c
+# Verify all 6 languages with one command
+gcc -std=c99 polyquine.c -o polyquine && ./polyquine | diff - polyquine.c && echo "[OK] C"
+g++ -std=c++11 -w polyquine.c -o polyquine && ./polyquine | diff - polyquine.c && echo "[OK] C++"
+python3 polyquine.c | diff - polyquine.c && echo "[OK] Python"
+lua polyquine.c | diff - polyquine.c && echo "[OK] Lua"
+ruby polyquine.c | diff - polyquine.c && echo "[OK] Ruby"
+perl polyquine.c | diff - polyquine.c && echo "[OK] Perl"
 ```
 
-> **Note**: No output means the quine is correct. The `-w` flag disables all C++ compilation warnings.
+Or one language at a time:
+
+```bash
+gcc -std=c99 polyquine.c -o polyquine && ./polyquine | diff - polyquine.c   # C
+g++ -std=c++11 -w polyquine.c -o polyquine && ./polyquine | diff - polyquine.c   # C++
+python3 polyquine.c | diff - polyquine.c   # Python
+lua polyquine.c | diff - polyquine.c       # Lua
+ruby polyquine.c | diff - polyquine.c      # Ruby
+perl polyquine.c | diff - polyquine.c      # Perl
+```
+
+> The `-w` flag disables all C++ compilation warnings. The C and C++ steps compile to the same `polyquine` binary.
 
