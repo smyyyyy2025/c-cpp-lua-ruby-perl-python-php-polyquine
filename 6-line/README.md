@@ -17,7 +17,7 @@ A **593-byte, 6-line** polyglot quine that prints its own source code, valid in:
 | C (gcc) | C99 | 11.4.0 |
 | C++ (g++) | C++11 | 11.4.0 |
 | Python | 3.0 | 3.10.12 |
-| Lua | 5.1 | 5.4.4 |
+| Lua | 5.2 | 5.4.4 |
 | Ruby | 2.0 | 3.0.2 |
 | Perl | 5.6 | 5.34.0 |
 | PHP | — | — |
