@@ -8,6 +8,7 @@ A **562-byte, 7-line** polyglot quine ([6-line variant →](6-line/)) that print
 - Ruby
 - Perl
 - Python
+- PHP (trivial: outputs source verbatim without `<?php`)
 
 ## Requirements
 
@@ -29,6 +30,7 @@ python3 polyquine.py     # Python
 lua polyquine.lua        # Lua
 ruby polyquine.rb        # Ruby
 perl polyquine.pl        # Perl
+php polyquine.php        # PHP (trivial: no <?php needed)
 ```
 
 ## Verify it
@@ -42,7 +44,8 @@ python3 polyquine.py | diff - polyquine.c && echo "[OK] Python"
 lua polyquine.lua | diff - polyquine.c && echo "[OK] Lua"
 ruby polyquine.rb | diff - polyquine.c && echo "[OK] Ruby"
 perl polyquine.pl | diff - polyquine.c && echo "[OK] Perl"
+php polyquine.php | diff - polyquine.c && echo "[OK] PHP"
 ```
 
-> The `-w` flag disables all C++ compilation warnings. C and C++ compile to the same binary. Each `.py` `.lua` `.rb` `.pl` file is byte-for-byte identical to `polyquine.c`.
+> The `-w` flag disables all C++ compilation warnings. C and C++ compile to the same binary. Each `.py` `.lua` `.rb` `.pl` `.php` file is byte-for-byte identical to `polyquine.c`. PHP works trivially — without `<?php` tags, it outputs any file verbatim.
 
