@@ -33,7 +33,7 @@ perl polyquine.pl        # Perl
 
 ## Verify it
 
-No output means the quine is correct. All files share identical content.
+The quine outputs its own source code, so `diff` shows nothing when correct:
 
 ```bash
 gcc -std=c99 polyquine.c -o polyquine && ./polyquine | diff - polyquine.c && echo "[OK] C"
