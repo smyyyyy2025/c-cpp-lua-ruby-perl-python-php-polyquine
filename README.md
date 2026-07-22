@@ -22,11 +22,26 @@ A **469-byte, 5-line** polyglot quine that prints its own source code, valid in:
 | Perl | 5.6 | 5.34.0 |
 | PHP | — | — |
 
-## Run & Verify
+## Run it
 
 ```bash
-#!/bin/bash
-BASE="polyquine"          # 改这里切换目标文件
+BASE="polyquine"
+TARGET="${BASE}.c"
+EXEC="${BASE}"
+
+gcc -std=c99   "$TARGET" -o "$EXEC" && ./"$EXEC"     # C
+g++ -std=c++11 -w "$TARGET" -o "$EXEC" && ./"$EXEC"  # C++
+python3 "$TARGET"     # Python
+lua "$TARGET"         # Lua
+ruby "$TARGET"        # Ruby
+perl "$TARGET"        # Perl
+php "$TARGET"         # PHP
+```
+
+## Verify it
+
+```bash
+BASE="polyquine"
 TARGET="${BASE}.c"
 EXEC="${BASE}"
 
