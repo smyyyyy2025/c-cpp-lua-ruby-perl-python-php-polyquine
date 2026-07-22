@@ -1,6 +1,6 @@
 # c-cpp-lua-ruby-perl-python-php-polyquine
 
-A **476-byte, 5-line** polyglot quine that prints its own source code, valid in:
+A **469-byte, 5-line** polyglot quine that prints its own source code, valid in:
 
 - C
 - C++
@@ -22,31 +22,24 @@ A **476-byte, 5-line** polyglot quine that prints its own source code, valid in:
 | Perl | 5.6 | 5.34.0 |
 | PHP | — | — |
 
-## Run it
+## Run & Verify
 
 ```bash
-gcc -std=c99 polyquine.c -o polyquine && ./polyquine     # C
-g++ -std=c++11 -w polyquine.c -o polyquine && ./polyquine # C++
-python3 polyquine.py     # Python
-lua polyquine.lua        # Lua
-ruby polyquine.rb        # Ruby
-perl polyquine.pl        # Perl
-php polyquine.php        # PHP (trivial: no <?php needed)
+#!/bin/bash
+BASE="polyquine"          # 改这里切换目标文件
+TARGET="${BASE}.c"
+EXEC="${BASE}"
+
+check() { "$2" "$TARGET" | diff - "$TARGET" && echo "[OK] $1"; }
+
+gcc -std=c99   "$TARGET" -o "$EXEC" && ./"$EXEC" | diff - "$TARGET" && echo "[OK] C"
+g++ -std=c++11 -w "$TARGET" -o "$EXEC" && ./"$EXEC" | diff - "$TARGET" && echo "[OK] C++"
+check Python python3
+check Lua    lua
+check Ruby   ruby
+check Perl   perl
+check PHP    php
 ```
 
-## Verify it
-
-The quine outputs its own source code, so `diff` shows nothing when correct:
-
-```bash
-gcc -std=c99 polyquine.c -o polyquine && ./polyquine | diff - polyquine.c && echo "[OK] C"
-g++ -std=c++11 -w polyquine.c -o polyquine && ./polyquine | diff - polyquine.c && echo "[OK] C++"
-python3 polyquine.py | diff - polyquine.c && echo "[OK] Python"
-lua polyquine.lua | diff - polyquine.c && echo "[OK] Lua"
-ruby polyquine.rb | diff - polyquine.c && echo "[OK] Ruby"
-perl polyquine.pl | diff - polyquine.c && echo "[OK] Perl"
-php polyquine.php | diff - polyquine.c && echo "[OK] PHP"
-```
-
-> The `-w` flag disables all C++ compilation warnings. C and C++ compile to the same binary. Each `.py` `.lua` `.rb` `.pl` `.php` file is byte-for-byte identical to `polyquine.c`. PHP works trivially — without `<?php` tags, it outputs any file verbatim.
+> `-w` disables C++ warnings. Each `.py` `.lua` `.rb` `.pl` `.php` file is byte-for-byte identical to `polyquine.c`. PHP works trivially — without `<?php` tags, it outputs any file verbatim.
 
