@@ -1,6 +1,6 @@
 # c-cpp-lua-ruby-perl-python-php-polyquine
 
-A polyglot quine that prints its own source code, valid in:
+A **469-byte, 5-line** polyglot quine that prints its own source code, valid in:
 
 - C
 - C++
