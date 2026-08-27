@@ -1,0 +1,9 @@
+* text=auto
+/polyquine.* text eol=lf
+/variants/*.c text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+/.gitattributes text eol=lf
+/.gitignore text eol=lf
+/.editorconfig text eol=lf

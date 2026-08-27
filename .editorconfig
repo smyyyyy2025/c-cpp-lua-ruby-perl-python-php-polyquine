@@ -1,0 +1,14 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[polyquine.*]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+[variants/*.c]
+insert_final_newline = false
+trim_trailing_whitespace = false
