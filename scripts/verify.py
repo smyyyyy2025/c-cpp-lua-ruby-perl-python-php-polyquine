@@ -8,9 +8,9 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_BYTES = 415
+SOURCE_BYTES = 413
 MAIN_FILES = tuple("polyquine." + ext for ext in ("c", "lua", "php", "pl", "py", "rb"))
-VARIANT_FILES = tuple("variants/quine_415_%d.c" % i for i in range(4))
+VARIANT_FILES = tuple("variants/quine_413_%d.c" % i for i in range(3))
 ALIASES = {"Lua": "lua", "PHP": "php", "Perl": "pl", "Python": "py", "Ruby": "rb"}
 
 
@@ -38,7 +38,7 @@ def check_sources(root):
         errors.extend(format_errors(name, sources[name]))
     actual = {p.relative_to(root).as_posix() for p in (root / "variants").glob("*.c")}
     if actual != set(VARIANT_FILES):
-        errors.append("variants/: expected exactly quine_415_0.c through quine_415_3.c")
+        errors.append("variants/: expected exactly quine_413_0.c through quine_413_2.c")
     if "polyquine.c" in sources:
         for name in MAIN_FILES[1:] + (VARIANT_FILES[0],):
             if name in sources and sources[name] != sources["polyquine.c"]:
@@ -103,7 +103,8 @@ def main():
     if errors:
         print("\n".join("FAIL " + error for error in errors), file=sys.stderr)
         return 1
-    print("Source checks: 10 files, 415 bytes / 4 lines / LF / no trailing newline.")
+    print("Source checks: %d files, %d bytes / 4 lines / LF / no trailing newline."
+          % (len(sources), SOURCE_BYTES))
     print("All six main files and variant 0 are byte-for-byte identical.")
     tools, errors = toolchains()
     if errors:

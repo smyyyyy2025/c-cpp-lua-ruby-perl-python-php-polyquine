@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Copy variant 0 to the six main files without changing its bytes."""
+"""Copy 413-byte variant 0 to the six main files without changing its bytes."""
 import sys
 from verify import ROOT, MAIN_FILES, VARIANT_FILES, format_errors
 

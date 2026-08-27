@@ -2,33 +2,41 @@
 
 [![Verify quines](https://github.com/smyyyyy2025/c-cpp-lua-ruby-perl-python-php-polyquine/actions/workflows/verify.yml/badge.svg)](https://github.com/smyyyyy2025/c-cpp-lua-ruby-perl-python-php-polyquine/actions/workflows/verify.yml)
 
-A **415-byte, 4-line** polyglot quine for **C, C++, Lua, Ruby, Perl, Python, and PHP**.
+A **413-byte, 4-line** polyglot quine for **C, C++, Lua, Ruby, Perl, Python, and PHP**.
 
 The same source prints itself byte-for-byte in every listed language. PHP is a
 trivial case: without a `<?php` opening tag, it outputs the source verbatim.
 
-The main version is **54 bytes shorter** than the previous 469-byte, 5-line
+The main version is **2 bytes shorter** than the previous 415-byte version,
+and **56 bytes shorter** than the original 469-byte, 5-line
 version. The [469-byte source](https://github.com/smyyyyy2025/c-cpp-lua-ruby-perl-python-php-polyquine/blob/4f2443db89f25d0b2b18b979cb6142b8e133afb6/polyquine.c)
 remains available in Git history.
 
 ## Files and variants
 
 The six root files (`polyquine.c`, `.lua`, `.php`, `.pl`, `.py`, and `.rb`)
-are byte-for-byte identical to [variant 0](variants/quine_415_0.c).
+are byte-for-byte identical to [variant 0](variants/quine_413_0.c).
 C and C++ both compile `polyquine.c`; a separate C++ copy is unnecessary.
 
-All four variants are **415 bytes and 4 lines**:
+All three variants are **413 bytes and 4 lines**:
 
 | File | Difference |
 | :--- | :--- |
-| [quine_415_0.c](variants/quine_415_0.c) | Main version. The initial comment precedes the macro; the final `printf` macro invocation generates the whole `main` function. |
-| [quine_415_1.c](variants/quine_415_1.c) | Moves the macro definition before the opening block comment. |
-| [quine_415_2.c](variants/quine_415_2.c) | Opens `main` explicitly before the local `char*` declaration; the macro emits the print call and closing brace. |
-| [quine_415_3.c](variants/quine_415_3.c) | Uses an alternative quote/comment arrangement on the shared third line. |
+| [quine_413_0.c](variants/quine_413_0.c) | Main version. The comment separates `#define` from `printf`; the final macro invocation generates the whole `main` function. |
+| [quine_413_1.c](variants/quine_413_1.c) | Opens `main` explicitly before the local `char*` declaration; the macro emits the print call and closing brace. |
+| [quine_413_2.c](variants/quine_413_2.c) | Uses an alternative quote/comment arrangement on the shared third line. |
+
+These correspond to the former 415-byte variants 0, 2, and 3. Moving the
+comment after `#define` in former variant 1 yields the same layout as variant 0,
+so the new set has three distinct variants. The old 415-byte files are kept
+only in Git history.
 
 The size reduction uses `__builtin_printf` instead of a header and ordinary
 `printf`, a shorter Perl helper, and Lua's `load` instead of an explicit
-function wrapper. The four alternatives have the same verified behavior; their
+function wrapper. The 413-byte version additionally uses `#define/*...*/printf`:
+the comment supplies the separator after `define`, saving one space in the
+program and one in its self-reproducing string. The three alternatives have
+the same verified behavior; their
 numbering does not rank compatibility.
 
 ## Tested environments
@@ -89,11 +97,11 @@ LUA=lua5.3 python3 scripts/verify.py
 
 The verifier uses only Python's standard library. It checks:
 
-- All ten source files are 415-byte ASCII, with three LF separators and no
+- All nine source files are 413-byte ASCII, with three LF separators and no
   trailing newline.
 - The six root copies and variant 0 are identical.
-- The main source and all four variants each work in seven languages
-  (35 checks), plus five extension-specific interpreter checks.
+- The main source and all three variants each work in seven languages
+  (28 checks), plus five extension-specific interpreter checks.
 - Every compile and execution exits successfully, and every runtime's raw
   stdout matches its source bytes exactly. No whitespace or newline
   normalization is applied.
@@ -107,12 +115,12 @@ If necessary, override individual executable paths with `CC`, `CXX`,
 executable, without extra shell arguments.
 
 The [GitHub Actions workflow](.github/workflows/verify.yml) runs the regression
-tests and all **40** execution checks on both Ubuntu versions for pushes to
+tests and all **33** execution checks on both Ubuntu versions for pushes to
 `main`, pull requests, and manual runs.
 
 ## Editing and synchronization
 
-Edit [variants/quine_415_0.c](variants/quine_415_0.c) to change the main version,
+Edit [variants/quine_413_0.c](variants/quine_413_0.c) to change the main version,
 then synchronize the six root copies:
 
 ```bash

@@ -17,7 +17,7 @@ class SourceChecks(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        self.source = b"a\nb\nc\n" + b"x" * 409
+        self.source = b"a\nb\nc\n" + b"x" * 407
         for name in verify.MAIN_FILES + verify.VARIANT_FILES:
             target = self.root / name
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -25,7 +25,7 @@ class SourceChecks(unittest.TestCase):
 
     def test_valid_structure(self):
         sources, errors = verify.check_sources(self.root)
-        self.assertEqual(len(sources), 10)
+        self.assertEqual(len(sources), 9)
         self.assertEqual(errors, [])
 
     def test_crlf_is_rejected(self):
@@ -37,7 +37,7 @@ class SourceChecks(unittest.TestCase):
         self.assertTrue(any("no trailing newline" in error for error in errors))
 
     def test_wrong_size_is_rejected(self):
-        self.assertTrue(any("expected 415 bytes" in error
+        self.assertTrue(any("expected 413 bytes" in error
                             for error in verify.format_errors("source", self.source[:-1])))
 
     def test_non_ascii_is_rejected(self):
@@ -45,19 +45,35 @@ class SourceChecks(unittest.TestCase):
                             for error in verify.format_errors("source", b"\xff" + self.source[1:])))
 
     def test_alias_and_variant_zero_must_match_main(self):
-        for name in ("polyquine.py", "variants/quine_415_0.c"):
+        for name in ("polyquine.py", "variants/quine_413_0.c"):
             with self.subTest(name=name):
                 (self.root / name).write_bytes(b"z" + self.source[1:])
                 _, errors = verify.check_sources(self.root)
                 self.assertTrue(any(name + ": differs" in error for error in errors))
                 (self.root / name).write_bytes(self.source)
 
+    def test_missing_alias_is_rejected(self):
+        (self.root / "polyquine.rb").unlink()
+        _, errors = verify.check_sources(self.root)
+        self.assertTrue(any("polyquine.rb:" in error for error in errors))
+
+    def test_old_415_byte_copies_are_rejected_even_if_identical(self):
+        for name in verify.MAIN_FILES + verify.VARIANT_FILES:
+            (self.root / name).write_bytes(self.source + b"xx")
+        _, errors = verify.check_sources(self.root)
+        self.assertEqual(sum("expected 413 bytes, got 415" in error for error in errors), 9)
+
     def test_missing_or_extra_variants_are_rejected(self):
-        (self.root / "variants/quine_415_3.c").unlink()
+        (self.root / "variants/quine_413_2.c").unlink()
         (self.root / "variants/unexpected.c").write_bytes(self.source)
         _, errors = verify.check_sources(self.root)
         self.assertTrue(any("expected exactly" in error for error in errors))
-        self.assertTrue(any("variants/quine_415_3.c:" in error for error in errors))
+        self.assertTrue(any("variants/quine_413_2.c:" in error for error in errors))
+
+    def test_leftover_415_variant_is_rejected(self):
+        (self.root / "variants/quine_415_0.c").write_bytes(self.source + b"xx")
+        _, errors = verify.check_sources(self.root)
+        self.assertTrue(any("expected exactly" in error for error in errors))
 
     def test_sync_restores_copies_without_adding_newline(self):
         (self.root / "polyquine.lua").write_bytes(b"broken\n")
